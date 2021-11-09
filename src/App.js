@@ -1,25 +1,44 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Switch, Route, NavLink } from 'react-router-dom';
+import { collection, addDoc  } from 'firebase/firestore/lite';
+import db from './config/firebase-setup';
+import CreatePlant from './pages/CreatePlant';
+import Home from './pages/Home';
 import './App.css';
 
-function App() {
+const plantsCol = collection(db, 'plants');
+
+export default class App extends Component {
+  state = {
+    plants: [],
+  }
+
+  createPlant = async newPlant => {
+    await addDoc(plantsCol, newPlant);
+  }
+
+render() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <nav>
+                {/* Insert navlink for ALL PUPPIES that links to the ListPuppies.js page */}
+                {/* Insert navlink for ADD PUPPY that links to the CreatePuppy.js page */}
+                <div><NavLink exact to='/plants/add'>ADD PLANT</NavLink></div>
+                <div><NavLink exact to='/'>HOME</NavLink></div>
+          </nav>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+        <Switch>
+            <Route exact path='/'>
+              <Home />
+            </Route>
+            <CreatePlant createPlant={this.createPlant} />
+          </Switch>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <main>
+      </main>
     </div>
   );
 }
-
-export default App;
+}
