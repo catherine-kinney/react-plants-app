@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-export default class CreatePlant extends Component {
+export default class EditPlant extends Component {
     state = {
-        formData: {
-            species: '',
-            water: '',
-            image: '',
-        }
+        // create formData property in state and set its
+        // value to this.props.location.state.selectedPuppy
+        formData: this.props.location.state.plantToEdit
     }
 
     handleChange = e => {
-        console.log(e.target.name);
-        this.state.formData[e.target.name] = e.target.value
         this.setState({
             formData: {
                 // Set state for formData
@@ -23,20 +20,20 @@ export default class CreatePlant extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.createPlant(this.state.formData);
+        this.props.updatePlant(this.state.formData);
     }
 
     render() {
         return (
-            <div>
-                <h1>Add Plant</h1>
+            <>
+                <h1>Edit Puppy</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         {/* TODO: Create name attribute for each input */}
                         <label>Species</label>
                         <input
                             className="form-control"
-                            value={this.state.formData.name}
+                            value={this.state.formData.species}
                             onChange={this.handleChange}
                             name="species"
                             required
@@ -46,7 +43,7 @@ export default class CreatePlant extends Component {
                         <label>Water</label>
                         <input
                             className="form-control"
-                            value={this.state.formData.breed}
+                            value={this.state.formData.water}
                             onChange={this.handleChange}
                             name="water"
                             required
@@ -62,14 +59,17 @@ export default class CreatePlant extends Component {
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="btn btn-info"
-                    >
-                        ADD PLANT
-                    </button>
+                    <div>
+                        <button
+                            type="submit"
+                            className="btn btn-info mr-2"
+                        >
+                            UPDATE PLANT
+                        </button>
+                        <Link className="btn btn-dark" to='/'>CANCEL</Link>
+                    </div>
                 </form>
-            </div>
+            </>
         );
     }
 }
